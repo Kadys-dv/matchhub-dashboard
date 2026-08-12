@@ -36,4 +36,8 @@ Execute `npm run check` para validar lint, tipos, testes e build de produção.
 
 O token da API fica em cookie HTTP-only e não é exposto ao JavaScript do navegador. Variáveis privadas permanecem somente no servidor. O controle de autorização definitivo continua pertencendo à API.
 
+## Publicação na Vercel
+
+Importe o repositório do dashboard na Vercel, mantenha o framework detectado como Next.js e configure `MATCHHUB_API_URL` com a URL HTTPS publicada da API, sem barra no final. O projeto não exige `vercel.json`; build, Route Handlers e runtime do servidor são detectados automaticamente.
+
 Desenvolvido por Dev Rodrigo • Todos os direitos reservados.
