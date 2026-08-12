@@ -6,8 +6,9 @@ import { getAccessToken } from "@/lib/session";
 
 export const metadata: Metadata = { title: "Entrar" };
 
-export default async function LoginPage() {
+export default async function LoginPage({searchParams}:{searchParams:Promise<{reason?:string}>}) {
   if (await getAccessToken()) redirect("/dashboard");
+  const sessionExpired=(await searchParams).reason==="session-expired";
   return (
     <main className="grid min-h-screen bg-slate-950 lg:grid-cols-[1.05fr_.95fr]">
       <section className="relative hidden overflow-hidden p-14 text-white lg:flex lg:flex-col lg:justify-between">
@@ -26,6 +27,7 @@ export default async function LoginPage() {
           <p className="text-sm font-semibold text-emerald-700">Bem-vindo de volta</p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-950">Acesse sua conta</h2>
           <p className="mt-3 text-sm leading-6 text-slate-500">Use as credenciais cadastradas na API MatchHub.</p>
+          {sessionExpired&&<p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">Sua sessão expirou após a atualização segura da API. Entre novamente para continuar.</p>}
           <LoginForm />
           <p className="mt-8 text-center text-xs leading-5 text-slate-400 lg:hidden">Desenvolvido por Dev Rodrigo<br />Todos os direitos reservados</p>
         </div>

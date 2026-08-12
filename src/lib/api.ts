@@ -1,9 +1,14 @@
 import { env } from "@/lib/env";
 import type { AthleteSummary, MatchStatus, MatchSummary, ModerationReport, PageResponse, ParticipantSummary, ReportSummary } from "@/types/api";
 
+export class ApiRequestError extends Error {
+  constructor(public readonly status:number){super(`API respondeu com status ${status}`);this.name="ApiRequestError";}
+}
+export function isUnauthorized(error:unknown){return error instanceof ApiRequestError&&error.status===401;}
+
 async function apiRequest<T>(path: string, token: string, init?: RequestInit): Promise<T> {
   const response=await fetch(`${env.MATCHHUB_API_URL}${path}`,{...init,headers:{Authorization:`Bearer ${token}`,...init?.headers},cache:"no-store"});
-  if (!response.ok) throw new Error(`API respondeu com status ${response.status}`);
+  if (!response.ok) throw new ApiRequestError(response.status);
   return response.json() as Promise<T>;
 }
 

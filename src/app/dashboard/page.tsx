@@ -1,5 +1,6 @@
 import { Activity, CalendarDays, MapPin, Target, Trophy, UsersRound } from "lucide-react";
-import { fetchOpenMatches } from "@/lib/api";
+import { redirect } from "next/navigation";
+import { fetchOpenMatches, isUnauthorized } from "@/lib/api";
 import { formatMatchDate, occupancyPercentage } from "@/lib/format";
 import { getAccessToken } from "@/lib/session";
 import { StatCard } from "@/components/stat-card";
@@ -11,7 +12,7 @@ export default async function DashboardPage() {
   const token = await getAccessToken();
   let data = emptyPage;
   let apiAvailable = true;
-  try { if (token) data = await fetchOpenMatches(token); } catch { apiAvailable = false; }
+  try { if (token) data = await fetchOpenMatches(token); } catch (error) { if(isUnauthorized(error))redirect("/api/auth/expired");apiAvailable = false; }
   const confirmed = data.content.reduce((total, match) => total + match.confirmed, 0);
   const capacity = data.content.reduce((total, match) => total + match.capacity, 0);
   const vacancies = Math.max(0, capacity - confirmed);
