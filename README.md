@@ -2,6 +2,16 @@
 
 Painel web administrativo da plataforma PlayMatch. Projeto independente que consome a `matchhub-api` sem acoplamento ao aplicativo Flutter.
 
+## Funcionalidades
+
+- autenticação via BFF com token em cookie HTTP-only;
+- indicadores operacionais em tempo real;
+- criação, conclusão, cancelamento e participantes das partidas;
+- busca e ativação/desativação de atletas;
+- fila de denúncias com resolução administrativa;
+- relatórios consolidados e navegação responsiva;
+- identidade PlayMatch com movimento 3D acessível.
+
 ## Tecnologias
 
 - Next.js 16, React 19 e TypeScript

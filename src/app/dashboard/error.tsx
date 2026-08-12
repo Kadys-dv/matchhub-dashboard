@@ -1,0 +1,4 @@
+"use client";
+import {useEffect} from "react";
+import {RefreshCcw,TriangleAlert} from "lucide-react";
+export default function DashboardError({error,reset}:{error:Error&{digest?:string};reset:()=>void}){useEffect(()=>{console.error("Falha no painel",error);},[error]);return <div className="grid min-h-[60vh] place-items-center text-center"><div><span className="mx-auto grid size-16 place-items-center rounded-3xl bg-red-100 text-red-700"><TriangleAlert size={28}/></span><h1 className="mt-5 text-2xl font-bold">Não foi possível carregar esta área</h1><p className="mt-2 max-w-md text-sm leading-6 text-slate-500">A falha foi isolada para preservar o restante do painel. Tente novamente ou verifique a conexão com a API.</p><button onClick={reset} className="mt-6 inline-flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-5 font-semibold text-white"><RefreshCcw size={17}/>Tentar novamente</button></div></div>}

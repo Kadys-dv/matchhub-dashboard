@@ -38,15 +38,15 @@ export function LoginForm() {
         E-mail
         <input name="email" type="email" autoComplete="email" required placeholder="voce@empresa.com" className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-emerald-600" />
       </label>
-      <label className="block text-sm font-medium text-slate-700">
-        Senha
+      <div className="block text-sm font-medium text-slate-700">
+        <label htmlFor="password">Senha</label>
         <span className="relative mt-2 block">
-          <input name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" required minLength={8} className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 pr-12 text-slate-900 shadow-sm focus:border-emerald-600" />
+          <input id="password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" required minLength={8} className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 pr-12 text-slate-900 shadow-sm focus:border-emerald-600" />
           <button type="button" onClick={() => setShowPassword((value) => !value)} className="absolute inset-y-0 right-0 grid w-12 place-items-center text-slate-500 hover:text-emerald-700" aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}>
             {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
           </button>
         </span>
-      </label>
+      </div>
       {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
       <button disabled={loading} className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 font-semibold text-white shadow-lg shadow-emerald-900/15 hover:bg-emerald-700 disabled:cursor-wait disabled:opacity-70">
         {loading ? <LoaderCircle className="animate-spin" size={20} /> : <LogIn size={20} />}

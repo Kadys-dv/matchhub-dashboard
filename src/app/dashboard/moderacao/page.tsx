@@ -1,3 +1,12 @@
-import { MessageSquareWarning } from "lucide-react";
-import { ComingSoon } from "@/components/coming-soon";
-export default function Page() { return <ComingSoon title="Central de moderação" description="Denúncias, mensagens reportadas e medidas administrativas em um fluxo auditável." icon={MessageSquareWarning} />; }
+import {Flag,ShieldAlert} from "lucide-react";
+import {fetchReports} from "@/lib/api";
+import {formatMatchDate} from "@/lib/format";
+import {getAccessToken} from "@/lib/session";
+import {ReportAction} from "@/components/report-action";
+import type {ModerationReport} from "@/types/api";
+
+export default async function ModerationPage(){
+  const token=await getAccessToken(); let reports:ModerationReport[]=[]; let denied=false;
+  try{reports=(await fetchReports(token!)).content;}catch{denied=true;}
+  return <div className="mx-auto max-w-5xl"><p className="text-sm font-semibold text-emerald-700">Segurança da comunidade</p><div className="mt-1 flex items-center gap-3"><h1 className="text-3xl font-bold tracking-tight">Moderação</h1>{reports.length>0&&<span className="rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-700">{reports.length} pendentes</span>}</div><p className="mt-2 text-sm text-slate-500">Analise relatos e registre uma decisão administrativa.</p>{denied?<div className="mt-7 rounded-2xl border border-amber-200 bg-amber-50 p-8 text-center"><ShieldAlert className="mx-auto text-amber-700"/><h2 className="mt-3 font-bold">Acesso administrativo necessário</h2><p className="mt-2 text-sm text-amber-800">As denúncias são protegidas e visíveis somente para administradores.</p></div>:<section className="mt-7 space-y-4">{reports.length?reports.map(report=><article key={report.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div className="flex flex-col justify-between gap-3 sm:flex-row"><div className="flex gap-3"><span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-red-100 text-red-700"><Flag size={20}/></span><div><div className="flex flex-wrap items-center gap-2"><h2 className="font-bold">{report.reason}</h2><span className="rounded-full bg-amber-100 px-2 py-1 text-[10px] font-bold uppercase text-amber-800">Pendente</span></div><p className="mt-1 text-xs text-slate-500">Enviada por {report.reporterName} • {formatMatchDate(report.createdAt)}</p>{report.matchTitle&&<p className="mt-1 text-xs font-semibold text-emerald-700">Partida: {report.matchTitle}</p>}</div></div><div className="flex shrink-0 gap-2"><ReportAction id={report.id} status="RESOLVED" label="Resolver"/><ReportAction id={report.id} status="DISMISSED" label="Arquivar"/></div></div><p className="mt-4 rounded-xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">{report.details}</p></article>):<div className="rounded-2xl border border-dashed border-slate-300 bg-white/60 p-12 text-center"><ShieldAlert className="mx-auto text-emerald-600"/><h2 className="mt-3 font-bold">Fila de moderação em dia</h2><p className="mt-1 text-sm text-slate-500">Nenhuma denúncia pendente.</p></div>}</section>}</div>;
+}

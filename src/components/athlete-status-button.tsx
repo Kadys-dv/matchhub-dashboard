@@ -1,0 +1,4 @@
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+export function AthleteStatusButton({id,enabled}:{id:string;enabled:boolean}){const router=useRouter();const [loading,setLoading]=useState(false);async function toggle(){if(!confirm(`${enabled?"Desativar":"Reativar"} esta conta?`))return;setLoading(true);const response=await fetch(`/api/admin/users/${id}/status`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({enabled:!enabled})});setLoading(false);if(response.ok)router.refresh();else alert("Apenas administradores podem realizar esta operação.")}return <button disabled={loading} onClick={toggle} className={`rounded-lg px-3 py-2 text-xs font-semibold ${enabled?"bg-red-50 text-red-700":"bg-emerald-100 text-emerald-800"}`}>{loading?"Salvando...":enabled?"Desativar":"Reativar"}</button>}

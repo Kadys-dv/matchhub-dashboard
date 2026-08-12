@@ -29,3 +29,43 @@ export interface AuthResponse {
   name: string;
   role: string;
 }
+
+export interface AthleteSummary {
+  id: string;
+  name: string;
+  email: string;
+  role: "PLAYER" | "ADMIN";
+  enabled: boolean;
+  createdAt: string;
+  participations: number;
+}
+
+export interface ParticipantSummary {
+  id: string;
+  name: string;
+  email: string;
+  joinedAt: string;
+}
+
+export interface ReportSummary {
+  totalUsers: number;
+  activeUsers: number;
+  openMatches: number;
+  fullMatches: number;
+  completedMatches: number;
+  totalParticipations: number;
+  pendingReports: number;
+}
+
+export interface ModerationReport {
+  id: string;
+  reporterId: string;
+  reporterName: string;
+  matchId: string | null;
+  matchTitle: string | null;
+  reason: string;
+  details: string;
+  status: "PENDING" | "RESOLVED" | "DISMISSED";
+  createdAt: string;
+  resolvedAt: string | null;
+}

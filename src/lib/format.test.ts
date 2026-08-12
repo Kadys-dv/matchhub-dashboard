@@ -6,6 +6,7 @@ describe("occupancyPercentage", () => {
     expect(occupancyPercentage(5, 10)).toBe(50);
     expect(occupancyPercentage(20, 10)).toBe(100);
     expect(occupancyPercentage(1, 0)).toBe(0);
+    expect(occupancyPercentage(-2, 10)).toBe(0);
   });
 });
 

@@ -1,3 +1,12 @@
-import { UsersRound } from "lucide-react";
-import { ComingSoon } from "@/components/coming-soon";
-export default function Page() { return <ComingSoon title="Gestão de atletas" description="Perfis, confiabilidade, avaliações e participação dos atletas com filtros inteligentes." icon={UsersRound} />; }
+import {Search,ShieldCheck,UsersRound} from "lucide-react";
+import {AthleteStatusButton} from "@/components/athlete-status-button";
+import {fetchAthletes} from "@/lib/api";
+import {getAccessToken} from "@/lib/session";
+import type {AthleteSummary} from "@/types/api";
+
+export default async function AthletesPage({searchParams}:{searchParams:Promise<{query?:string}>}){
+  const query=(await searchParams).query??""; const token=await getAccessToken();
+  let athletes:AthleteSummary[]=[]; let denied=false;
+  try{athletes=(await fetchAthletes(token!,query)).content;}catch{denied=true;}
+  return <div className="mx-auto max-w-[1440px]"><div><p className="text-sm font-semibold text-emerald-700">Comunidade</p><h1 className="mt-1 text-3xl font-bold tracking-tight">Atletas</h1><p className="mt-2 text-sm text-slate-500">Consulte contas, participação e situação de acesso.</p></div><form className="relative mt-7 max-w-xl"><Search className="absolute left-4 top-3.5 text-slate-400" size={18}/><input name="query" defaultValue={query} placeholder="Buscar por nome ou e-mail" className="h-11 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-4 shadow-sm"/></form>{denied?<div className="mt-7 rounded-2xl border border-amber-200 bg-amber-50 p-7 text-center"><ShieldCheck className="mx-auto text-amber-700"/><h2 className="mt-3 font-bold">Acesso administrativo necessário</h2><p className="mt-2 text-sm text-amber-800">Entre com uma conta ADMIN para consultar e gerenciar os atletas.</p></div>:<div className="mt-7 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="hidden grid-cols-[1.3fr_1.5fr_.6fr_.6fr_auto] gap-4 border-b border-slate-100 bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-500 md:grid"><span>Atleta</span><span>E-mail</span><span>Jogos</span><span>Status</span><span>Ação</span></div>{athletes.length?athletes.map(athlete=><article key={athlete.id} className="grid gap-3 border-b border-slate-100 px-5 py-4 last:border-0 md:grid-cols-[1.3fr_1.5fr_.6fr_.6fr_auto] md:items-center"><strong className="flex items-center gap-2"><span className="grid size-9 place-items-center rounded-full bg-emerald-100 text-emerald-700"><UsersRound size={17}/></span>{athlete.name}{athlete.role==="ADMIN"&&<ShieldCheck size={15} className="text-blue-600"/>}</strong><span className="truncate text-sm text-slate-500">{athlete.email}</span><span className="text-sm font-semibold">{athlete.participations}</span><span className={`w-fit rounded-full px-2 py-1 text-[10px] font-bold uppercase ${athlete.enabled?"bg-emerald-100 text-emerald-700":"bg-red-100 text-red-700"}`}>{athlete.enabled?"Ativo":"Desativado"}</span><AthleteStatusButton id={athlete.id} enabled={athlete.enabled}/></article>):<p className="p-10 text-center text-sm text-slate-500">Nenhum atleta encontrado.</p>}</div>}</div>;
+}

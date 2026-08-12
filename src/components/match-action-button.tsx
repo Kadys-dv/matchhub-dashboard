@@ -1,0 +1,5 @@
+"use client";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+export function MatchActionButton({id,action,label,danger=false}:{id:string;action:"cancel"|"complete";label:string;danger?:boolean}) { const router=useRouter();const [loading,setLoading]=useState(false);async function run(){if(!confirm(`Confirma a ação: ${label.toLowerCase()}?`))return;setLoading(true);const response=await fetch(`/api/matches/${id}/action`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action})});setLoading(false);if(response.ok)router.refresh();else alert("A operação não foi autorizada ou a partida não permite esta alteração.")}return <button onClick={run} disabled={loading} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold ${danger?"bg-red-50 text-red-700 hover:bg-red-100":"bg-emerald-100 text-emerald-800 hover:bg-emerald-200"}`}>{loading&&<LoaderCircle className="animate-spin" size={14}/>} {label}</button>;}

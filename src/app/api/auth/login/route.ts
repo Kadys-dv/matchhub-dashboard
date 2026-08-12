@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { env } from "@/lib/env";
-import { SESSION_COOKIE } from "@/lib/session";
+import { IDENTITY_COOKIE, SESSION_COOKIE } from "@/lib/session";
 import type { AuthResponse } from "@/types/api";
 
 const credentialsSchema = z.object({
@@ -34,6 +34,7 @@ export async function POST(request: Request) {
       path: "/",
       maxAge: auth.expiresInSeconds,
     });
+    response.cookies.set(IDENTITY_COOKIE,JSON.stringify({name:auth.name,role:auth.role}),{httpOnly:true,secure:process.env.NODE_ENV==="production",sameSite:"lax",path:"/",maxAge:auth.expiresInSeconds});
     return response;
   } catch {
     return NextResponse.json({ message: "A API MatchHub está indisponível." }, { status: 503 });
