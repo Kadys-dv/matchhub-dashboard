@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MatchHub Dashboard
 
-## Getting Started
+Painel web administrativo da plataforma PlayMatch. Projeto independente que consome a `matchhub-api` sem acoplamento ao aplicativo Flutter.
 
-First, run the development server:
+## Tecnologias
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js 16, React 19 e TypeScript
+- Tailwind CSS 4
+- BFF com Route Handlers e sessão em cookie HTTP-only
+- Zod para validação de configuração e formulários
+- Vitest e Testing Library
+- Docker multi-stage e GitHub Actions
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Execução local
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Mantenha a `matchhub-api` ativa em `http://localhost:8080`.
+2. Copie `.env.example` para `.env.local` se precisar alterar a URL.
+3. Execute `npm install` e `npm run dev`.
+4. Abra `http://localhost:3000`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Qualidade
 
-## Learn More
+Execute `npm run check` para validar lint, tipos, testes e build de produção.
 
-To learn more about Next.js, take a look at the following resources:
+## Segurança
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O token da API fica em cookie HTTP-only e não é exposto ao JavaScript do navegador. Variáveis privadas permanecem somente no servidor. O controle de autorização definitivo continua pertencendo à API.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Desenvolvido por Dev Rodrigo • Todos os direitos reservados.
