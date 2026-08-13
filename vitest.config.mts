@@ -1,4 +1,17 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
-export default defineConfig({ plugins: [react()], resolve: { tsconfigPaths: true }, test: { environment: "jsdom", setupFiles: ["./vitest.setup.ts"] } });
+export default defineConfig({
+  plugins: [react()],
+  resolve: { tsconfigPaths: true },
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./vitest.setup.ts"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      include: ["src/components/**/*.tsx", "src/lib/**/*.ts"],
+      exclude: ["**/*.test.*", "src/lib/env.ts", "src/lib/session.ts"],
+    },
+  },
+});

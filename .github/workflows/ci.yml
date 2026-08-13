@@ -13,3 +13,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - run: npm run test:coverage
+      - name: Publicar cobertura Vitest
+        uses: actions/upload-artifact@v4
+        with:
+          name: matchhub-dashboard-coverage
+          path: coverage
+          if-no-files-found: error
+          retention-days: 14

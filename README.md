@@ -30,7 +30,11 @@ Painel web administrativo da plataforma PlayMatch. Projeto independente que cons
 
 ## Qualidade
 
+Veja também o [diagrama de arquitetura](docs/ARCHITECTURE.md).
+
 Execute `npm run check` para validar lint, tipos, testes e build de produção.
+
+Execute `npm run test:coverage` para gerar o relatório em `coverage/index.html`.
 
 ## Segurança
 
